@@ -1,4 +1,5 @@
 {% extends 'base.html'%}
+{%load static%}
 
 {%block page_title%}    
     about us
@@ -12,5 +13,5 @@
         <br> With Amazon.
     </p>
     <!-- img-->
-    <img src="https://cdn.britannica.com/w:400,h:300,c:crop/84/73184-004-E5A450B5/Sunflower-field-Fargo-North-Dakota.jpg">
+    <img src="{% static 'assets/sunflower.jpg'%}" alt="sunflower image">
 {%endblock%} 

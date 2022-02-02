@@ -1,1 +1,1 @@
-console.log( 'connected ')
+console.log( 'js file is connected')
