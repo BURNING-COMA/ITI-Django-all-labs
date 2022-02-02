@@ -15,13 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from amazon.views import homeView,aboutUsView, contactUsView,msgSentView
+from amazon.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('home/', homeView),
-    path('', homeView),
-    path('about-us/', aboutUsView), 
-    path('contact-us', contactUsView),
-    path('msg-sent', msgSentView)
+    path('home/', homeView, name='home'),
+    path('', domainHomeView, name='domainHome'),
+    path('about-us/', aboutUsView, name='aboutUs'), 
+    path('contact-us/', contactUsView,name='contactUs'),
+    path('msg-sent/', msgSentView, name='msgSent')
 ]

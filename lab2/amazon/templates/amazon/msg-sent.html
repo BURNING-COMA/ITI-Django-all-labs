@@ -1,14 +1,13 @@
-<center>
-    <!-- navbar -->
-    <div>
-        <a href="http://localhost:8000/home">Home</a> <pre>   </pre>
-        <a href="http://localhost:8000/contact-us">Contact Us</a> <pre>   </pre>
-        <a href="http://localhost:8000/about-us">About Us</a> <pre>   </pre>
-    </div>
+{% extends 'base.html'%}
 
-    
-    <h1> Your Email: {{user_email}} </h1>
-    <h1> Your Message: {{user_msg}} </h1>
+{%block page_title%}    
+    thank you
+{%endblock%}
 
-    <h1> Thanks for your message. Have a nice day :) </h1>
-</center>
+{%block page_content%} 
+<h1> Thanks for your message. Have a nice day :) </h1>
+<h2> Your Email: {{user_email}} </h2>
+<h2> Your Message: {{user_msg}} </h2>
+{%endblock%} 
+
+

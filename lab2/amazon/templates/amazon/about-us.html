@@ -1,10 +1,10 @@
-<center>
-    <!-- navbar -->
-    <div>
-        <a href="http://localhost:8000/home">Home</a> <pre>   </pre>
-        <a href="http://localhost:8000/contact-us">Contact Us</a> <pre>   </pre>
-        <a href="http://localhost:8000/about-us">About Us</a> <pre>   </pre>
-    </div>
+{% extends 'base.html'%}
+
+{%block page_title%}    
+    about us
+{%endblock%}
+
+{%block page_content%} 
     <!-- some text -->
     <h1> 2022 resolution </h1>
     <p> 
@@ -13,4 +13,4 @@
     </p>
     <!-- img-->
     <img src="https://cdn.britannica.com/w:400,h:300,c:crop/84/73184-004-E5A450B5/Sunflower-field-Fargo-North-Dakota.jpg">
-</center>
+{%endblock%} 

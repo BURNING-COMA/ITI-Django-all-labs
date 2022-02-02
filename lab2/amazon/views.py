@@ -1,25 +1,14 @@
 from http.client import HTTPResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import HttpResponse
 
 # Create your views here.
+
+def domainHomeView( request ): 
+    return redirect( 'home/' )
+
 def homeView( request ):
-    page_content = '''
-    <center> 
-    <!-- nav bar -->
-    <div>
-        <a href="http://localhost:8000/home">Home</a> <pre>   </pre>
-        <a href="http://localhost:8000/contact-us">Contact Us</a> <pre>   </pre>
-        <a href="http://localhost:8000/about-us">About Us</a> <pre>   </pre>
-    </div>
-
-    <h1>Welcome</h1>
-    <p> both  http://localhost:8000/home/ and http://localhost:8000/ <br> lead to homeView view <br> which respond with this page
-    </p>
-    </center>
-    '''
-
-    return HttpResponse(page_content)
+    return render( request, 'amazon/home.html')
 
 
 def aboutUsView( request ):

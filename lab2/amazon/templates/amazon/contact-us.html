@@ -1,20 +1,21 @@
-<center>
-    <!-- navbar -->
-    <div>
-        <a href="http://localhost:8000/home">Home</a> <pre>   </pre>
-        <a href="http://localhost:8000/contact-us">Contact Us</a> <pre>   </pre>
-        <a href="http://localhost:8000/about-us">About Us</a> <pre>   </pre>
-    </div>
+{% extends 'base.html'%}
 
-    <p> Your Message  </p>
+{%block page_title%}    
+    contact us
+{%endblock%}
 
-    <form action="http://localhost:8000/msg-sent">
-        <label for="uemail">Email:</label><br>
-        <input type="email" id="uemail" name="uemail"><br>
-        <label for="msg">Message:</label><br>
-        <textarea rows="10" cols="50" id="msg" name="msg">
-        </textarea>
-        <br>
-        <input type="submit" value="Submit">
-    </form>
-</center>
+{%block page_content%} 
+<p> Your Message  </p>
+
+<form action="{% url 'msgSent' %}">
+    <label for="uemail">Email:</label><br>
+    <input type="email" id="uemail" name="uemail"><br>
+    <label for="msg">Message:</label><br>
+    <textarea rows="10" cols="50" id="msg" name="msg">
+    </textarea>
+    <br>
+    <input type="submit" value="Submit">
+</form>
+{%endblock%} 
+
+
