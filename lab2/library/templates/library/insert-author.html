@@ -1,0 +1,12 @@
+{% extends "library/base.html" %}
+
+
+{% block page_content %}
+    <form action="{% url 'insert-author' %}">
+        <label for="first_name">first name:</label>
+        <input type="text" name="first_name">
+        <label for="last_name">last name:</label>
+        <input type="text" name="last_name">
+        <input type="submit">
+    </form>
+{% endblock %}

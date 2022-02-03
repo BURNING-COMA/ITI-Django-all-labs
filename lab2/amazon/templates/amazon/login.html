@@ -1,0 +1,16 @@
+{% extends "login-register-base.html"%}
+
+{%block page_title%}    
+    log in
+{%endblock%}
+
+{%block page_content%}
+<h1> Log In </h1> 
+<form action="{% url 'login' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit">
+</form>
+<p> {{ wrong_cred }} </p>
+<a href="{% url 'register' %}">Register</a>
+{%endblock%} 

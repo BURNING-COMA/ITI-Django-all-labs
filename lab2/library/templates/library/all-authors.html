@@ -1,0 +1,13 @@
+{% extends "library/base.html" %}
+
+{% block page_content %}
+    <h1>List of Authors: </h1>
+    <ul>
+        {% for author in authors %}
+            <li>
+                {{author.id}}. {{author.first_name}} {{author.last_name}}
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

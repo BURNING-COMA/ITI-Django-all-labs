@@ -5,7 +5,47 @@
 {%endblock%}
 
 {%block page_content%} 
-<h1>Welcome</h1>
-<p> both  http://localhost:8000/home/ and http://localhost:8000/ <br> lead to homeView view <br> which respond with this page
-</p>
+<h1>Welcome to Student Management Panel</h1>
+<h2> {{ status }} </h2>
+<ul>
+    <li>
+        <h2> Insert Student </h2> 
+        <form action="{% url 'insert' %}" method="post">
+            {% csrf_token %}
+            {{ insert_form.as_p }}
+            <input type="submit" value="Submit">
+        </form>
+    </li>
+
+    <li>
+        <h2> Update Student </h2> 
+        <form action="{% url 'update' %}" method="post">
+            {% csrf_token %}
+            {{ update_form.as_p }}
+            <input type="submit" value="Submit">
+        </form>
+    </li>
+
+    <li>
+        <h2> Search Students By Name </h2> 
+        <form action="{% url 'search' %}" method="post">
+            {% csrf_token %}
+            {{ search_form.as_p }}
+            <input type="submit" value="Submit">
+        </form>
+    </li>
+
+    <li>
+        <h2> Delete Student </h2> 
+        <form action="{% url 'delete' %}" method="post">
+            {% csrf_token %}
+            {{ delete_form.as_p }}
+            <input type="submit" value="Submit">
+        </form>
+    </li>
+
+    <li>
+        <a href="{% url 'selectAll'%}"> <h2>List All Students </h2> </a>
+    </li>
+</ul>
 {%endblock%} 
