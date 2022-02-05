@@ -5,10 +5,15 @@ from multiprocessing import context
 from re import search
 from shutil import unregister_unpack_format
 from telnetlib import SE
+from urllib import request
 from urllib.parse import uses_fragment
 from django.forms import PasswordInput
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+from django.urls import reverse
+
 
 from .forms import *
 from .models import MyUser, Student
@@ -16,9 +21,15 @@ from .models import MyUser, Student
 # Create your views here.
 
 def domainHomeView( request ): 
-    return redirect( 'home/' )
+    if not request.user.is_authenticated:
+        return redirect('/login/')
+  
+    return redirect('/home/')
 
 def homeView( request ):
+    # verify user is logged in
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect('/login/')
 
     context = {
         'insert_form' : Insert(),
@@ -27,16 +38,24 @@ def homeView( request ):
         'search_form' : Search(), 
     }
     return render( request, 'amazon/home.html', context)
+  
+        
 
 
 def aboutUsView( request ):
+    if not request.user.is_authenticated:
+        return redirect('/login/')
     return render( request, 'amazon/about-us.html')
 
 
 def contactUsView( request ):
+    if not request.user.is_authenticated:
+        return redirect('/login/')
     return render( request, 'amazon/contact-us.html')
 
 def msgSentView( request ):
+    if not request.user.is_authenticated:
+        return redirect('/login/')
     context = {}
     context[ 'user_email' ] = request.GET['uemail']
     context[ 'user_msg' ] = request.GET['msg']
@@ -44,28 +63,26 @@ def msgSentView( request ):
 
 
 def loginView( request ):
-    # TODO check whether user is already logged in 
+    # if user is logged in, send it home
+    if request.user.is_authenticated:
+        return redirect('/home/')
+    
     if request.method == 'POST':
-        loginForm = Login(request.POST)
-        # TODO check credintials and redirect correctly 
+        loginForm = Login(request.POST) 
         if loginForm.is_valid():
             # extract entered username and password  
             username = loginForm.cleaned_data['user_name']
             password = loginForm.cleaned_data['password']
 
-            user_name_exists = MyUser.objects.filter(user_name = username).exists()
-            if not user_name_exists: 
+            user = authenticate(username=username, password=password)
+            if user is not None: 
+                # TODO use sessions
+                request.session['username'] = username
+                login( request, user)
+                return redirect( '/home/')
+            else: 
                 loginForm = Login()
-                return render( request, 'amazon/login.html', {'form': loginForm, 'wrong_cred': 'username or password is incorrect'})
-
-            password_correct = MyUser.objects.get( user_name = username).password == password 
-            if not password_correct:
-                loginForm = Login()
-                return render( request, 'amazon/login.html', {'form': loginForm, 'wrong_cred': 'username or password is incorrect'})
-            
-            # everything is ok. let user log in and redirect it to home
-            # TODO somehow change system state to indicate that this user is logged in
-            return redirect('/home/')
+                return render( request, 'amazon/login.html', {'form': loginForm, 'msg': 'username or password is incorrect'})
         else: 
             return HttpResponse('Something is wrong')
     else:
@@ -74,7 +91,10 @@ def loginView( request ):
 
 
 def registerView(request):
+    if request.user.is_authenticated:
+            return redirect('/home/')
     if request.method == 'POST':
+        
         regForm = Register( request.POST )
         if regForm.is_valid():
             # user_name exists ?
@@ -85,11 +105,13 @@ def registerView(request):
             print( username, password)
             if MyUser.objects.filter( user_name = username ).exists(): 
                 regForm = Register()
-                return render(request, 'amazon/register.html', {'form': regForm, 'wrong_cred': 'username is taken'})
+                return render(request, 'amazon/register.html', {'form': regForm, 'msg': 'username is taken'})
             
             # register user in db and redirect to login 
             MyUser.objects.create( user_name = username, password = password )
-            return render( request, 'amazon/login.html', {'form': Login()} )
+            # add user to User admin model
+            User.objects.create_user( username = username, password = password, is_staff = True  )
+            return render( request, 'amazon/login.html', {'form': Login(), 'msg' : 'Registered! Please log in'} )
                  
     else: 
         registerForm = Register()
@@ -100,7 +122,10 @@ def registerView(request):
 
 # student management views 
 def insertStudent( req ):
+    if not req.user.is_authenticated:
+            return redirect('/login/')
     if req.method == 'POST':
+        
         insertForm = Insert( req.POST )
         # duplicate student names is allowed. name is not pk. 
         if insertForm.is_valid():
@@ -110,7 +135,10 @@ def insertStudent( req ):
     return redirect('/home/')
 
 def updateStudent( req ):
+    if not req.user.is_authenticated:
+        return redirect('/login/')
     if req.method == 'POST':
+    
         updateForm = Update( req.POST )
         # duplicate student names is allowed. name is not pk. 
         if updateForm.is_valid():
@@ -122,6 +150,8 @@ def updateStudent( req ):
 
 
 def deleteStudent( req ):
+    if not req.user.is_authenticated:
+        return redirect('/login/')
     if req.method == 'POST':
         sform = Delete( req.POST )
         # duplicate student names is allowed. name is not pk. 
@@ -131,9 +161,13 @@ def deleteStudent( req ):
     return redirect('/home/')
 
 def showAllStudent( req ):
+    if not req.user.is_authenticated:
+        return redirect('/login/')
     return render( req, 'amazon/search-results.html', { 'students': Student.objects.all()}) 
 
 def searchStudent( req ):
+    if not req.user.is_authenticated:
+        return redirect('/login/')
     if req.method == 'POST':
         sform = Search( req.POST )
         # duplicate student names is allowed. name is not pk. 
@@ -141,3 +175,12 @@ def searchStudent( req ):
                 studentList = Student.objects.filter( name=sform.cleaned_data['name'])
                 return render( req, 'amazon/search-results.html', {'students': studentList})
     return redirect('/home/') 
+
+def logoutView( req ):
+    if not req.user.is_authenticated:
+        return redirect('/login/')
+    logout(req)
+    req.session.clear()
+    return redirect('/login/')
+
+

@@ -4,6 +4,10 @@
     home
 {%endblock%}
 
+{% block username %}
+user: {{request.session.username}}
+{% endblock %}
+
 {%block page_content%} 
 <h1>Welcome to Student Management Panel</h1>
 <h2> {{ status }} </h2>

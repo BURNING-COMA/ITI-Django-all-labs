@@ -4,6 +4,10 @@
     contact us
 {%endblock%}
 
+{% block username %}
+user: {{request.session.username}}
+{% endblock %}
+
 {%block page_content%} 
 <p> Your Message  </p>
 

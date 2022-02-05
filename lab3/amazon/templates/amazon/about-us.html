@@ -1,6 +1,11 @@
 {% extends 'base.html'%}
 {%load static%}
 
+
+{% block username %}
+user: {{request.session.username}}
+{% endblock %}
+
 {%block page_title%}    
     about us
 {%endblock%}

@@ -22,12 +22,13 @@ from amazon.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('home/', homeView, name='home'),
-    path('', loginView, name='login'),
+    path('', domainHomeView, name='login'),
     path('about-us/', aboutUsView, name='aboutUs'), 
     path('contact-us/', contactUsView,name='contactUs'),
     path('msg-sent/', msgSentView, name='msgSent'),
     path('login/', loginView, name='login'),
     path('register/', registerView, name='register'),
+    path('logout/', logoutView, name='logout'),
 
     path('insert', insertStudent, name='insert'),
     path('update', updateStudent, name='update'),
