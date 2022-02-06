@@ -25,6 +25,7 @@ user: {{request.session.username}}
         <h2> Update Student </h2> 
         <form action="{% url 'update' %}" method="post">
             {% csrf_token %}
+            <p> New Student Data </p>
             {{ update_form.as_p }}
             <input type="submit" value="Submit">
         </form>
