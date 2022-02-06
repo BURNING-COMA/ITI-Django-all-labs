@@ -5,3 +5,6 @@ from . import models
 
 admin.site.register(models.MyUser)
 admin.site.register(models.Student)
+admin.site.register(models.Track)
+admin.site.register(models.Intake)
+
