@@ -1,4 +1,5 @@
-
+# TODO complete genertic create view for track model
+# I have already create generic list view for track model 
 from ast import Del, Mod
 import http
 from http.client import HTTPResponse
@@ -14,14 +15,17 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
-
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.views import View
+from django.views.generic import ListView, CreateView
 
 from django.views.decorators.http import require_http_methods
 
 
+
 from .forms import *
-from .models import MyUser, Student
+from .models import MyUser, Student, Track
 
 # Create your views here.
 
@@ -226,3 +230,20 @@ def logoutView( req ):
     return redirect('/login/')
 
 
+
+
+# generic class-based views 
+
+@method_decorator(login_required, name='dispatch')
+class CreateTrack( CreateView ) :
+    fields = '__all__'
+    model = Track
+    def get_success_url(self):
+        # redirect('listTrack/')# for some reason, it appends /listTrack to CreatTrack causing error
+        return reverse('listTrack')
+
+
+
+@method_decorator(login_required, name='dispatch')
+class ListTrack( ListView ):
+    model = Track
