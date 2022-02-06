@@ -124,8 +124,8 @@ def registerView(request):
 def insertStudent( req ):
     if not req.user.is_authenticated:
             return redirect('/login/')
+            
     if req.method == 'POST':
-        
         insertForm = Insert( req.POST )
         # duplicate student names is allowed. name is not pk. 
         if insertForm.is_valid():
