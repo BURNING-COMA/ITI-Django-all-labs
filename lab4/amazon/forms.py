@@ -26,11 +26,17 @@ class Insert( forms.ModelForm ):
         fields = '__all__'
         model = models.Student
 
-class Update( forms.Form ):
-    name = forms.CharField( max_length=100 )
-    new_name = forms.CharField( max_length=100 )
-    new_age = forms.IntegerField()
-    new_notes = forms.CharField( max_length=1000)
+# class Update( forms.Form ):
+#     name = forms.CharField( max_length=100 )
+#     new_name = forms.CharField( max_length=100 )
+#     new_age = forms.IntegerField()
+#     new_notes = forms.CharField( max_length=1000)
+
+class Update( forms.ModelForm ):
+    student_id = forms.IntegerField( label='Update student with ID')
+    class Meta: 
+        fields = '__all__'
+        model = models.Student
 
 class Delete( forms.Form ):
     name = forms.CharField( max_length=100 )

@@ -14,6 +14,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 
+from django.views import View
+
 from django.views.decorators.http import require_http_methods
 
 
@@ -133,21 +135,48 @@ def insertStudent( req ):
             Student.objects.create( name=insertForm.cleaned_data['name'], age=insertForm.cleaned_data['age'], notes=insertForm.cleaned_data['notes']);
             return render( req, 'amazon/status.html', {'status': 'success'})
 
-def updateStudent( req ):
-    if not req.user.is_authenticated:
-        return redirect('/login/')
-    if req.method == 'POST':
-    
-        updateForm = Update( req.POST )
-        # duplicate student names is allowed. name is not pk. 
-        if updateForm.is_valid():
-            nname, nage, nnotes= updateForm.cleaned_data['new_name'], updateForm.cleaned_data['new_age'], updateForm.cleaned_data['new_notes']
-            Student.objects.filter(name = updateForm.cleaned_data['name']).update(name=nname, age=nage, notes=nnotes)
-            return render( req, 'amazon/status.html', {'status': 'success'})
-    return redirect('/home/')
+# def updateStudent( req ):
+#     if not req.user.is_authenticated:
+#         return redirect('/login/')
 
-# class updateStudent( ):
-#     pass 
+#     if req.method == 'POST':
+#         updateForm = Update( req.POST )
+#         # duplicate student names is allowed. name is not pk. 
+#         if updateForm.is_valid():
+#             nname, nage, nnotes= updateForm.cleaned_data['new_name'], updateForm.cleaned_data['new_age'], updateForm.cleaned_data['new_notes']
+#             Student.objects.filter(name = updateForm.cleaned_data['name']).update(name=nname, age=nage, notes=nnotes)
+#             return render( req, 'amazon/status.html', {'status': 'success'})
+#     return redirect('/home/')
+
+class updateStudent( View ):
+     #method to be called if request Method is GET
+    def get(self, req):
+        if not req.user.is_authenticated:
+            return redirect('/login/')
+        return redirect('/home/')
+    #Method to be called if request Method is GET
+    def post(self, req):
+        # is it possible to recieve a POST request from unlogged in user ? 
+        # regardless, just block it
+        if not req.user.is_authenticated:
+            return redirect('/login/')
+
+        targetStudent = Student.objects.get( id = req.POST['student_id'])
+        # update( req.POST ) will lead to creation of new Student
+        # Instead, we must use modelformname( req.POST, instance=targetObject)
+        # https://docs.djangoproject.com/en/4.0/topics/forms/modelforms/
+        updateStudentForm = Update( req.POST, instance=targetStudent )
+
+        # .is_valid() call is not necessary since .save() will do checks automatically ?
+        # if updateStudentForm.is_valid():
+
+        # nname, nage, nnotes= updateForm.cleaned_data['name'], updateForm.cleaned_data['age'], updateForm.cleaned_data['notes']
+        # Student.objects.filter(id = updateForm.cleaned_data['student_id']).update(name=nname, age=nage, notes=nnotes)
+        
+        updateStudentForm.save()
+        return render( req, 'amazon/status.html', {'status': 'success'})
+        
+
 
 
 def deleteStudent( req ):

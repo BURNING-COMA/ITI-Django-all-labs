@@ -31,7 +31,7 @@ urlpatterns = [
     path('logout/', logoutView, name='logout'),
 
     path('insert', insertStudent, name='insert'),
-    path('update', updateStudent, name='update'),
+    path('update', updateStudent.as_view(), name='update'),
     path('delete', deleteStudent, name='delete'),
     path('search', searchStudent, name='search'),
     path('selectAll', showAllStudent, name='selectAll'),
