@@ -1,0 +1,22 @@
+{% extends 'base.html'%}
+{%load static%}
+
+
+{% block username %}
+user: {{request.session.username}}
+{% endblock %}
+
+{%block page_title%}    
+    about us
+{%endblock%}
+
+{%block page_content%} 
+    <!-- some text -->
+    <h1> 2022 resolution </h1>
+    <p> 
+        Let each day be unique and memorable. 
+        <br> With Amazon.
+    </p>
+    <!-- img-->
+    <img src="{% static 'assets/sunflower.jpg'%}" alt="sunflower image">
+{%endblock%} 
