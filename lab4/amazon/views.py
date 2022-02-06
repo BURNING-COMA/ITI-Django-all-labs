@@ -124,6 +124,8 @@ def registerView(request):
 
 
 
+
+
 # student management views
 @require_http_methods(['POST']) 
 def insertStudent( req ):
@@ -148,6 +150,9 @@ def insertStudent( req ):
 #             return render( req, 'amazon/status.html', {'status': 'success'})
 #     return redirect('/home/')
 
+
+
+# class-based view for updateStudent    
 class updateStudent( View ):
      #method to be called if request Method is GET
     def get(self, req):
@@ -172,7 +177,7 @@ class updateStudent( View ):
 
         # nname, nage, nnotes= updateForm.cleaned_data['name'], updateForm.cleaned_data['age'], updateForm.cleaned_data['notes']
         # Student.objects.filter(id = updateForm.cleaned_data['student_id']).update(name=nname, age=nage, notes=nnotes)
-        
+
         updateStudentForm.save()
         return render( req, 'amazon/status.html', {'status': 'success'})
         
