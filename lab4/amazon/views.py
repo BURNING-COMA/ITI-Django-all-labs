@@ -14,6 +14,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 
+from django.views.decorators.http import require_http_methods
+
 
 from .forms import *
 from .models import MyUser, Student
@@ -120,19 +122,16 @@ def registerView(request):
 
 
 
-# student management views 
+# student management views
+@require_http_methods(['POST']) 
 def insertStudent( req ):
     if not req.user.is_authenticated:
             return redirect('/login/')
-            
-    if req.method == 'POST':
-        insertForm = Insert( req.POST )
-        # duplicate student names is allowed. name is not pk. 
-        if insertForm.is_valid():
-                Student.objects.create( name=insertForm.cleaned_data['name'], age=insertForm.cleaned_data['age'], notes=insertForm.cleaned_data['notes']);
-                return render( req, 'amazon/status.html', {'status': 'success'})
-
-    return redirect('/home/')
+    insertForm = Insert( req.POST )
+    # duplicate student names is allowed. name is not pk. 
+    if insertForm.is_valid():
+            Student.objects.create( name=insertForm.cleaned_data['name'], age=insertForm.cleaned_data['age'], notes=insertForm.cleaned_data['notes']);
+            return render( req, 'amazon/status.html', {'status': 'success'})
 
 def updateStudent( req ):
     if not req.user.is_authenticated:
@@ -147,6 +146,8 @@ def updateStudent( req ):
             return render( req, 'amazon/status.html', {'status': 'success'})
     return redirect('/home/')
 
+# class updateStudent( ):
+#     pass 
 
 
 def deleteStudent( req ):
