@@ -10,8 +10,10 @@ from django.forms import PasswordInput
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, HttpResponseRedirect
 
+from django.views.generic import ListView, CreateView
+
 from .forms import *
-from .models import MyUser, Student
+from .models import MyUser, Student, Track
 
 # Create your views here.
 
@@ -44,10 +46,9 @@ def msgSentView( request ):
 
 
 def loginView( request ):
-    # TODO check whether user is already logged in 
     if request.method == 'POST':
         loginForm = Login(request.POST)
-        # TODO check credintials and redirect correctly 
+        
         if loginForm.is_valid():
             # extract entered username and password  
             username = loginForm.cleaned_data['user_name']
@@ -64,7 +65,6 @@ def loginView( request ):
                 return render( request, 'amazon/login.html', {'form': loginForm, 'wrong_cred': 'username or password is incorrect'})
             
             # everything is ok. let user log in and redirect it to home
-            # TODO somehow change system state to indicate that this user is logged in
             return redirect('/home/')
         else: 
             return HttpResponse('Something is wrong')
@@ -141,3 +141,6 @@ def searchStudent( req ):
                 studentList = Student.objects.filter( name=sform.cleaned_data['name'])
                 return render( req, 'amazon/search-results.html', {'students': studentList})
     return redirect('/home/') 
+
+
+

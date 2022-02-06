@@ -52,5 +52,14 @@ user: {{request.session.username}}
     <li>
         <a href="{% url 'selectAll'%}"> <h2>List All Students </h2> </a>
     </li>
+
+    <li>
+        <a href="{% url 'listTrack'%}"> <h2>List All Tracks </h2> </a>
+    </li>
+
+    <li>
+        <a href="{% url 'createTrack'%}"> <h2>Add New Track </h2> </a>
+    </li>
+    
 </ul>
 {%endblock%} 

@@ -30,11 +30,16 @@ urlpatterns = [
     path('register/', registerView, name='register'),
     path('logout/', logoutView, name='logout'),
 
+    # student CRUD ..
     path('insert', insertStudent, name='insert'),
     path('update', updateStudent.as_view(), name='update'),
     path('delete', deleteStudent, name='delete'),
     path('search', searchStudent, name='search'),
     path('selectAll', showAllStudent, name='selectAll'),
+
+    # track CRUD 
+    path('createTrack/', CreateTrack.as_view(), name="createTrack"),
+    path('listTrack/', ListTrack.as_view(), name="listTrack"),
 
     path('cars/', include('cars.urls')),
     path('library/', include('library.urls'))

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+
+{%block page_content%}    
+
+<h2>
+    {{ msg }}
+</h2>
+<h2>Tracks</h2>
+
+
+    <table width="100%" border="1px">
+        <tr>
+            <th> ID </th>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+        {% for track in object_list %}
+        <tr>
+            <td> {{ track.id }} </td>
+            <td> {{ track.name }}</td>
+            <td> {{ track.description }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+
+{%endblock%}

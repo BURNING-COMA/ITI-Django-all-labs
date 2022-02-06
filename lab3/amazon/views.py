@@ -76,7 +76,6 @@ def loginView( request ):
 
             user = authenticate(username=username, password=password)
             if user is not None: 
-                # TODO use sessions
                 request.session['username'] = username
                 login( request, user)
                 return redirect( '/home/')
