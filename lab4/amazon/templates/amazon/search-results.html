@@ -8,6 +8,8 @@
         <td>Name</td>
         <td>Age</td>
         <td>Notes</td>
+        <td>Track Name</td>
+        <td>Intake No.</td>
     </tr>
     {% for student in students %}
     <tr>     
@@ -15,6 +17,8 @@
         <td> {{ student.name }}</td>
         <td> {{ student.age }} </td>
         <td> {{ student.notes }}</td>
+        <td> {{ student.track.name }} </td>
+        <td> {{ student.intake.intake_no}} </td>
     </tr>
     {% endfor %}
 </table>

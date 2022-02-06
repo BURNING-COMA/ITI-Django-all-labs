@@ -12,8 +12,8 @@ class Student( models.Model ):
     name = models.CharField( max_length=100 )
     age = models.IntegerField()
     notes = models.CharField( null=True, max_length=1000 )
-    track_id = models.ForeignKey( 'Track', on_delete=models.CASCADE , null=True, blank=True)
-    intake_id = models.ForeignKey( 'Intake', on_delete=models.CASCADE, null=True, blank=True)
+    track = models.ForeignKey( "Track", on_delete=models.CASCADE , null=True)
+    intake = models.ForeignKey( "Intake", on_delete=models.CASCADE, null=True)
 
 class Track( models.Model ):
     name = models.CharField( max_length= 100 )
@@ -21,5 +21,5 @@ class Track( models.Model ):
 
 class Intake( models.Model ):
     intake_no = models.IntegerField()
-    start_date = models.DateField()
-    end_date = models.DateField()
+    start_date = models.DateField( null = True)
+    end_date = models.DateField( null=True)

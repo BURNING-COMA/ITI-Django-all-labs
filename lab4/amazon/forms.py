@@ -5,6 +5,8 @@ from django import forms
 
 from . import models
 
+
+
 class Login( forms.Form ):
     user_name = forms.CharField( max_length=100, )
     password = forms.CharField(widget=forms.PasswordInput)
@@ -19,7 +21,7 @@ class Register( forms.Form ):
 #     name = forms.CharField(label='st name', max_length=100 )
 #     age = forms.IntegerField()
 #     notes = forms.CharField( max_length=1000 )
-
+# FIXME find a way to display track and intake names in update and insert forms .. 
 class Insert( forms.ModelForm ):
     # add additional fields besides model fields 
     class Meta: 
@@ -39,7 +41,7 @@ class Update( forms.ModelForm ):
         model = models.Student
 
 class Delete( forms.Form ):
-    name = forms.CharField( max_length=100 )
+    student_id = forms.IntegerField()
 
 class Search( forms.Form ):
      name = forms.CharField( max_length=100 )

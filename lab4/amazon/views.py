@@ -1,3 +1,4 @@
+
 from ast import Del, Mod
 import http
 from http.client import HTTPResponse
@@ -80,7 +81,6 @@ def loginView( request ):
 
             user = authenticate(username=username, password=password)
             if user is not None: 
-                # TODO use sessions
                 request.session['username'] = username
                 login( request, user)
                 return redirect( '/home/')
@@ -134,7 +134,7 @@ def insertStudent( req ):
     insertForm = Insert( req.POST )
     # duplicate student names is allowed. name is not pk. 
     if insertForm.is_valid():
-            Student.objects.create( name=insertForm.cleaned_data['name'], age=insertForm.cleaned_data['age'], notes=insertForm.cleaned_data['notes']);
+            insertForm.save()
             return render( req, 'amazon/status.html', {'status': 'success'})
 
 # def updateStudent( req ):
@@ -191,14 +191,19 @@ def deleteStudent( req ):
         sform = Delete( req.POST )
         # duplicate student names is allowed. name is not pk. 
         if sform.is_valid():
-                Student.objects.filter( name=sform.cleaned_data['name']).delete()
+                Student.objects.filter( id=sform.cleaned_data['student_id']).delete()
                 return render( req, 'amazon/status.html', {'status': 'successful'})
     return redirect('/home/')
+
+
+
 
 def showAllStudent( req ):
     if not req.user.is_authenticated:
         return redirect('/login/')
     return render( req, 'amazon/search-results.html', { 'students': Student.objects.all()}) 
+
+
 
 def searchStudent( req ):
     if not req.user.is_authenticated:
@@ -210,6 +215,8 @@ def searchStudent( req ):
                 studentList = Student.objects.filter( name=sform.cleaned_data['name'])
                 return render( req, 'amazon/search-results.html', {'students': studentList})
     return redirect('/home/') 
+
+
 
 def logoutView( req ):
     if not req.user.is_authenticated:
