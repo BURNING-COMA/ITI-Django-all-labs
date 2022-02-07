@@ -1,0 +1,25 @@
+{% extends 'base.html'%}
+
+{%block page_title%}    
+    contact us
+{%endblock%}
+
+{% block username %}
+user: {{request.session.username}}
+{% endblock %}
+
+{%block page_content%} 
+<p> Your Message  </p>
+
+<form action="{% url 'msgSent' %}">
+    <label for="uemail">Email:</label><br>
+    <input type="email" id="uemail" name="uemail"><br>
+    <label for="msg">Message:</label><br>
+    <textarea rows="10" cols="50" id="msg" name="msg">
+    </textarea>
+    <br>
+    <input type="submit" value="Submit">
+</form>
+{%endblock%} 
+
+
